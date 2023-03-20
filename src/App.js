@@ -2,24 +2,38 @@ import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState([])
+  const [searchImg, setSearchImg] = useState('')
+  const [setData, setSetData] = useState('');
 
-  console.log(photos);
 
   useEffect(() => {
-    axios.get('https://api.unsplash.com/photos?page=1', {
+    axios.get(`https://api.unsplash.com/search/photos?page=1&query=${searchImg}`, {
       params: {
-        client_id: 'DGlKOJFXCD986uRSiAPF0djbdbBDSyA9k4nCgIRDJw8',
-        per_page: 100
+        client_id: '65q8BN30HMhrFGU9oEm_bSpqF0qNfrauxXkYmbh_Kpk',
+        per_page: 1000
       }
     })
       .then(response => {
-        setPhotos(response.data);
+        setPhotos(response.data.results);
+        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
       });
-  }, []);
+
+  }, [setData]);
+
+
+  function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      setSetData(searchImg);
+    }
+  }
+
+  function handleInputChange(event) {
+    setSearchImg(event.target.value);
+  }
 
   return (
     <Fragment>
@@ -29,51 +43,26 @@ function App() {
             <h1>Unsplash</h1>
             <h4>The internet’s source for visuals.</h4>
             <h4>Powered by creators everywhere.</h4>
-            <input type='search' placeholder='Search high-resolution images' />
+            <input onChange={handleInputChange} onKeyDown={handleKeyDown} type='search' placeholder='Search high-resolution images' />
+
           </div>
         </div>
       </section>
 
-      <div className="gallery">
+      <section className='container-fluid'>
+        <div className="row">
+          {
+            photos?.map((item, index) => {
+              return (
+                <div key={index} className="column">
+                  <img src={item?.cover_photo.urls.raw} style={{ width: '100%', height: '100%' }} alt={item.alt_description} />
+                </div>
+              )
+            })
+          }
+        </div>
+      </section>
 
-
-        {photos.map(photo => (
-          <div>
-            <figure className="gallery__item">
-              <img src={photo.urls.raw + "&w=1500&dpr=2"} className="gallery__img" alt="Image 1" />
-            </figure>
-          </div>
-        ))}
-
-      </div>
-
-
-      {/* <div className='gal-main'>
-        {photos.map(photo => (
-          <div className='photo-main'>
-            <div className='img-1'>
-              <img src={photo.urls.raw + "&w=1500&dpr=2"} />
-            </div>
-            <div className='img-2'>
-              <img src={photo.urls.raw + "&w=1500&dpr=2"} />
-            </div>
-            <div className='img-3'>
-              <img src={photo.urls.raw + "&w=1500&dpr=2"} />
-            </div>
-          </div>
-
-        ))}
-
-      </div> */}
-
-
-
-
-      {/* <div className='container'>
-        {photos.map(photo => (
-          <img key={photo.id} src={photo.urls.raw + "&w=1500&dpr=2"} alt={photo.alt_description} />
-        ))}
-      </div> */}
     </Fragment >
   );
 }

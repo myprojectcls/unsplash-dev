@@ -8,7 +8,7 @@ function App() {
 
 
   useEffect(() => {
-    axios.get(`https://api.unsplash.com/search/photos?page=1&query=${searchImg}`, {
+    axios.get(`https://api.unsplash.com/search/collections?page=1&query=${searchImg}`, {
       params: {
         client_id: '65q8BN30HMhrFGU9oEm_bSpqF0qNfrauxXkYmbh_Kpk',
         per_page: 1000
@@ -16,7 +16,7 @@ function App() {
     })
       .then(response => {
         setPhotos(response.data.results);
-        console.log(response.data);
+        console.log(response.data.results);
       })
       .catch(error => {
         console.log(error);
@@ -44,7 +44,7 @@ function App() {
             <h4>The internet’s source for visuals.</h4>
             <h4>Powered by creators everywhere.</h4>
             <input onChange={handleInputChange} onKeyDown={handleKeyDown} type='search' placeholder='Search high-resolution images' />
-
+            
           </div>
         </div>
       </section>

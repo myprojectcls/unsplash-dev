@@ -44,7 +44,7 @@ function App() {
             <h4>The internet’s source for visuals.</h4>
             <h4>Powered by creators everywhere.</h4>
             <input onChange={handleInputChange} onKeyDown={handleKeyDown} type='search' placeholder='Search high-resolution images' />
-            
+
           </div>
         </div>
       </section>
